@@ -1,1 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5 Hot Announcements from Dreamforce 2026 · Sanjay Shinde</title>
+  <meta name="description" content="A Salesforce architect's take on the 5 biggest announcements from Dreamforce 2026 — Agentforce 360, Koa, Claudeforce, Missionforce, and Data 360." />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0b1020; --panel: rgba(255,255,255,0.04); --panel-border: rgba(255,255,255,0.09);
+      --text: #e8ecf8; --muted: #9aa6c7; --brand: #00a1e0; --brand-2: #7c4dff; --accent: #ff6f61;
+      --ring: rgba(0,161,224,0.35); --radius: 18px; --maxw: 760px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Sora', sans-serif; letter-spacing: -0.02em; line-height: 1.15; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .aurora { position: fixed; inset: 0; z-index: -2;
+      background:
+        radial-gradient(60% 60% at 15% 10%, rgba(0,161,224,0.22), transparent 60%),
+        radial-gradient(50% 50% at 85% 5%, rgba(124,77,255,0.20), transparent 60%),
+        var(--bg); }
+
+    nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+      background: rgba(11,16,32,0.6); border-bottom: 1px solid var(--panel-border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px; max-width: 1080px; margin: 0 auto; }
+    .logo { font-family: 'Sora'; font-weight: 800; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; color: var(--text); }
+    .logo .dot { width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 0 16px var(--ring); }
+    .back { color: var(--muted); font-size: 0.9rem; }
+    .back:hover { color: var(--text); text-decoration: none; }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    article { padding: 64px 0 40px; }
+    .kicker { color: var(--brand); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    article h1 { font-size: clamp(2rem, 5.5vw, 3.1rem); font-weight: 800; margin: 14px 0 18px;
+      background: linear-gradient(120deg, var(--text), #c9d4f5); -webkit-background-clip: text; background-clip: text; }
+    .meta { color: var(--muted); font-size: 0.92rem; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center;
+      padding-bottom: 26px; border-bottom: 1px solid var(--panel-border); margin-bottom: 34px; }
+    .meta .pill { padding: 4px 12px; border-radius: 999px; background: rgba(0,161,224,0.10); border: 1px solid rgba(0,161,224,0.25); color: #bfe6f7; font-size: 0.78rem; }
+
+    .lead { font-size: 1.15rem; color: var(--text); margin-bottom: 28px; }
+    article p { color: #cfd6ee; margin-bottom: 20px; }
+    article h2 { font-size: 1.5rem; margin: 40px 0 6px; }
+
+    .num-card { display: flex; align-items: flex-start; gap: 18px; margin: 40px 0 6px; }
+    .num-card .n { flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
+      font-family: 'Sora'; font-weight: 800; font-size: 1.2rem; color: white;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 8px 24px -8px var(--ring); }
+    .num-card h2 { margin: 0; padding-top: 6px; }
+    .tagline { color: var(--brand); font-weight: 600; font-size: 0.92rem; margin: -2px 0 14px 64px; }
+
+    blockquote { margin: 28px 0; padding: 16px 22px; border-left: 3px solid var(--brand);
+      background: var(--panel); border-radius: 0 12px 12px 0; color: var(--muted); font-style: italic; }
+
+    .takeaway { background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius);
+      padding: 26px 28px; margin: 40px 0; }
+    .takeaway h3 { font-size: 1.15rem; margin-bottom: 10px; }
+    .takeaway ul { margin: 0; padding-left: 20px; color: #cfd6ee; }
+    .takeaway li { margin-bottom: 8px; }
+
+    .cta { text-align: center; padding: 30px 0 10px; }
+    .btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 24px; border-radius: 999px;
+      font-weight: 600; font-size: 0.95rem; background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white; box-shadow: 0 10px 30px -8px var(--ring); transition: transform .15s ease; }
+    .btn:hover { transform: translateY(-3px); text-decoration: none; }
+
+    .note { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--panel-border);
+      margin-top: 44px; padding-top: 20px; }
+
+    footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 30px 0 60px; }
+    footer .heart { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="aurora"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="../index.html"><span class="dot"></span> Sanjay Shinde</a>
+      <a class="back" href="../index.html#blog">← Back to blog</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <article>
+      <div class="kicker">Dreamforce · 2026</div>
+      <h1>5 Hot Announcements from Dreamforce 2026</h1>
+      <div class="meta">
+        <span>By Sanjay Shinde</span>
+        <span>·</span>
+        <span>Sep 2026</span>
+        <span>·</span>
+        <span>6 min read</span>
+        <span class="pill">Agentforce</span>
+        <span class="pill">AI</span>
+        <span class="pill">Data 360</span>
+      </div>
+
+      <p class="lead">
+        Every Dreamforce sets the tone for the year ahead — and Dreamforce 2026 made one thing
+        unmistakably clear: the platform is now built <em>agent-first</em>. From a purpose-built
+        reasoning model to a landmark AI partnership, here are the five announcements I think every
+        architect, admin, and developer should have on their radar.
+      </p>
+
+      <div class="num-card"><div class="n">1</div><h2>Agentforce 360</h2></div>
+      <div class="tagline">The platform, reframed around autonomous agents.</div>
+      <p>
+        Agentforce 360 is the headline evolution of Salesforce's agent platform — a unified layer for
+        building, deploying, and governing AI agents across every customer-facing surface. Salesforce
+        showcased it at real enterprise scale (including a marquee collaboration with FIDE to power
+        the future of chess), signalling that agents are moving from pilots to production across sales,
+        service, marketing, and commerce.
+      </p>
+      <p>
+        <strong>Why it matters for architects:</strong> agents become first-class citizens in your
+        solution design. Topics, actions, guardrails, and observability now sit alongside your objects,
+        flows, and Apex as core building blocks.
+      </p>
+
+      <div class="num-card"><div class="n">2</div><h2>Koa — the first CRM reasoning model</h2></div>
+      <div class="tagline">A model built for enterprise decision-making, not just chat.</div>
+      <p>
+        Koa is Salesforce's inaugural CRM-specific reasoning model, developed with NVIDIA on Nemotron
+        technology. Rather than a general-purpose LLM, Koa is tuned for the kinds of structured,
+        multi-step decisions CRM work actually demands — grounded in your data and business context.
+      </p>
+      <blockquote>
+        A reasoning model that understands CRM semantics out of the box is a big deal: it shortens the
+        gap between "the model can talk" and "the agent can reliably act."
+      </blockquote>
+
+      <div class="num-card"><div class="n">3</div><h2>Claudeforce — Salesforce × Anthropic</h2></div>
+      <div class="tagline">Claude, brought natively into the platform.</div>
+      <p>
+        One of the most talked-about announcements: Claudeforce, a strategic partnership that integrates
+        Anthropic's Claude models into the Salesforce platform. It's a strong statement on model choice —
+        giving customers access to frontier reasoning while keeping everything inside Salesforce's trust
+        and governance boundaries.
+      </p>
+      <p>
+        <strong>The theme to watch:</strong> multi-model. Salesforce is leaning into letting customers
+        pick the right model for the job rather than betting on a single one.
+      </p>
+
+      <div class="num-card"><div class="n">4</div><h2>Missionforce</h2></div>
+      <div class="tagline">Agentforce for government and national security.</div>
+      <p>
+        Missionforce brings purpose-built AI agents to the public sector and defense space, with the
+        security posture those missions require (including IL5-level authorization). It's Salesforce
+        meeting some of the most demanding compliance and sovereignty requirements head-on — a signal of
+        how seriously the company is taking regulated, high-stakes deployments.
+      </p>
+
+      <div class="num-card"><div class="n">5</div><h2>Data 360</h2></div>
+      <div class="tagline">The data foundation that makes agents trustworthy.</div>
+      <p>
+        None of the above works without great data — and Data 360 is the unified data and AI
+        infrastructure that grounds agents in a complete, real-time view of the customer. For anyone
+        who has worked with Data Cloud, this is the layer that turns scattered records into the
+        harmonized, resolved context an agent needs to answer correctly and act safely.
+      </p>
+      <p>
+        <strong>Architect's lens:</strong> your data model, identity resolution, and harmonization work
+        is no longer "nice to have" — it's the difference between an agent that helps and one that
+        hallucinates.
+      </p>
+
+      <div class="takeaway">
+        <h3>My take: three things to do next</h3>
+        <ul>
+          <li><strong>Get your data house in order.</strong> Data 360 rewards clean models, solid identity resolution, and clear governance.</li>
+          <li><strong>Prototype an agent now.</strong> Pick one high-friction workflow and stand up an Agentforce 360 agent end to end.</li>
+          <li><strong>Think multi-model.</strong> With Koa and Claudeforce, design for choosing the right model per use case — and for governing them all.</li>
+        </ul>
+      </div>
+
+      <p>
+        Dreamforce 2026 wasn't about a single flashy feature — it was about a platform decisively
+        reorganizing itself around agents, grounded data, and model choice. The organizations that
+        invest in the fundamentals now will be the ones extracting real value a year from today.
+      </p>
+
+      <p>What announcement are you most excited about? I'd love to hear your take.</p>
+
+      <div class="cta">
+        <a class="btn" href="mailto:sanjayshinde@salesforce.com">✉️ Let's discuss</a>
+      </div>
+
+      <p class="note">
+        Written from an architect's perspective based on Dreamforce 2026 announcements. Product names
+        and details reflect Salesforce's public announcements at the time of writing — always confirm
+        specifics against the official Salesforce newsroom before relying on them.
+      </p>
+    </article>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Sanjay Shinde · Built with <span class="heart">♥</span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
