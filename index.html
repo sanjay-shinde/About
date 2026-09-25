@@ -201,6 +201,23 @@
       background: linear-gradient(135deg, rgba(0,161,224,0.25), rgba(124,77,255,0.25)); font-size: 1.15rem; }
     .cert span { font-size: 0.94rem; font-weight: 500; }
 
+    /* Blog */
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 900px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) { .blog-grid { grid-template-columns: 1fr; } }
+    .blog-card {
+      display: flex; flex-direction: column;
+      background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius);
+      padding: 24px; transition: transform .2s ease, border-color .2s ease; position: relative; overflow: hidden;
+    }
+    .blog-card:hover { transform: translateY(-6px); border-color: var(--brand); }
+    .blog-card .kicker { color: var(--brand); font-size: 0.76rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .blog-card h3 { font-size: 1.1rem; margin: 8px 0 8px; }
+    .blog-card p { color: var(--muted); font-size: 0.92rem; flex: 1; }
+    .blog-card .read { margin-top: 16px; color: var(--brand); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; }
+    .blog-card .read::after { content: "→"; transition: transform .2s ease; }
+    .blog-card:hover .read::after { transform: translateX(4px); }
+
     /* Contact */
     .contact-card {
       max-width: 720px; margin: 0 auto; text-align: center;
@@ -235,6 +252,7 @@
         <a href="#expertise">Expertise</a>
         <a href="#experience">Experience</a>
         <a href="#certs">Certifications</a>
+        <a href="#blog">Blog</a>
         <a href="#contact">Contact</a>
         <a href="https://www.linkedin.com/in/sanjayramshinde/" target="_blank" rel="noopener">LinkedIn ↗</a>
       </div>
@@ -419,6 +437,46 @@
       </div>
 
       <p class="edu-line reveal">🎓 <strong>BE</strong>, VPKBIET, Baramati · 2015–2019 · CGPA 7.52/10</p>
+    </section>
+
+    <section id="blog">
+      <div class="section-head reveal">
+        <div class="eyebrow">Writing</div>
+        <h2>Blog &amp; Articles</h2>
+        <p>Thoughts on Salesforce architecture, Agentforce, Data Cloud, and building on the platform.</p>
+      </div>
+
+      <!--
+        ADD YOUR BLOG LINKS HERE.
+        Copy one <a class="blog-card"> block per post and edit:
+          - href="..."      → the blog post URL
+          - kicker           → category/date label
+          - h3               → post title
+          - p                → short description
+        Delete any cards you don't need.
+      -->
+      <div class="blog-grid">
+        <a class="blog-card reveal" href="#" target="_blank" rel="noopener">
+          <span class="kicker">Agentforce · 2026</span>
+          <h3>Your first blog title</h3>
+          <p>A short one- or two-line summary of what this post is about. Replace this text with your own.</p>
+          <span class="read">Read article</span>
+        </a>
+
+        <a class="blog-card reveal" href="#" target="_blank" rel="noopener">
+          <span class="kicker">Data Cloud · 2026</span>
+          <h3>Your second blog title</h3>
+          <p>A short one- or two-line summary of what this post is about. Replace this text with your own.</p>
+          <span class="read">Read article</span>
+        </a>
+
+        <a class="blog-card reveal" href="#" target="_blank" rel="noopener">
+          <span class="kicker">Architecture · 2026</span>
+          <h3>Your third blog title</h3>
+          <p>A short one- or two-line summary of what this post is about. Replace this text with your own.</p>
+          <span class="read">Read article</span>
+        </a>
+      </div>
     </section>
 
     <section id="contact">
