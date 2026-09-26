@@ -36,7 +36,6 @@
     "address": { "@type": "PostalAddress", "addressLocality": "Hyderabad", "addressRegion": "Telangana", "addressCountry": "IN" },
     "email": "mailto:sanjayshinde@salesforce.com",
     "sameAs": [ "https://www.linkedin.com/in/sanjayramshinde/" ],
-    "alumniOf": { "@type": "CollegeOrUniversity", "name": "VPKBIET, Baramati" },
     "knowsAbout": [
       "Salesforce", "Agentforce", "Einstein Trust Layer", "Prompt Templates", "Data Cloud",
       "Apex", "Lightning Web Components", "Visualforce", "SOQL", "Sales Cloud", "Service Cloud",
@@ -250,6 +249,9 @@
     .blog-card .read { margin-top: 16px; color: var(--brand); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; }
     .blog-card .read::after { content: "→"; transition: transform .2s ease; }
     .blog-card:hover .read::after { transform: translateX(4px); }
+    .blog-card .latest { position: absolute; top: 14px; right: 14px; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 6px 16px -6px var(--ring); }
 
     /* Contact */
     .contact-card {
@@ -469,7 +471,6 @@
         <div class="cert reveal"><div class="medal">🏗️</div><span>Certified Platform App Builder</span></div>
       </div>
 
-      <p class="edu-line reveal">🎓 <strong>BE</strong>, VPKBIET, Baramati · 2015–2019 · CGPA 7.52/10</p>
     </section>
 
     <section id="blog">
@@ -490,6 +491,7 @@
       -->
       <div class="blog-grid">
         <a class="blog-card reveal" href="blog/complete-mfa-challenges-for-automation-users.html">
+          <span class="latest">Latest</span>
           <span class="kicker">Security · Automation</span>
           <h3>Complete MFA Challenges for Automation Users</h3>
           <p>Generate Salesforce TOTP codes programmatically for automation logins — with Node.js, Java, and .NET samples.</p>
