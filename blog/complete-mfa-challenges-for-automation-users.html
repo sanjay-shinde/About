@@ -203,7 +203,7 @@
       <ol class="steps">
         <li>Log in as the automation user and open <strong>Settings → Personal → Advanced User Details</strong> (or your org's app-registration path for the <em>One-Time Password Generator</em>).</li>
         <li>Choose to <strong>connect / register an authenticator app</strong>. Salesforce shows a QR code and a text <strong>shared key</strong>.</li>
-        <li>Instead of scanning the QR, copy the <strong>Base32 shared key</strong> — this is what your code needs. (It looks like <code>MCAA7REYNQ4L6DYQEVTAXAK7RGANQHOY</code>.)</li>
+        <li>Instead of scanning the QR, copy the <strong>Base32 shared key</strong> — this is what your code needs. (It looks like a 32-character string, e.g. <code>MCAA••••••••••••••••••••••••QHOY</code> — keep the full value secret.)</li>
         <li>Finish registration by entering one valid code (you can generate it with the snippets below) so Salesforce binds the authenticator to the user.</li>
       </ol>
 
@@ -253,8 +253,8 @@ console.<span class="fn">log</span>(<span class="str">'code:'</span>, <span clas
 
 <span class="kw">public class</span> Totp {
 
-    <span class="cmt">// Load from env/secret store in production</span>
-    <span class="kw">private static final</span> String TOTP_SECRET = <span class="str">"MCAA7REYNQ4L6DYQEVTAXAK7RGANQHOY"</span>;
+    <span class="cmt">// Never hard-code the secret — load it from an env var / secrets manager</span>
+    <span class="kw">private static final</span> String TOTP_SECRET = System.getenv(<span class="str">"TOTP_SECRET"</span>);
 
     <span class="kw">public static</span> String <span class="fn">getTotpCode</span>() <span class="kw">throws</span> GeneralSecurityException {
         <span class="kw">if</span> (TOTP_SECRET == <span class="kw">null</span> || TOTP_SECRET.isEmpty()) {
@@ -312,8 +312,8 @@ console.<span class="fn">log</span>(<span class="str">'code:'</span>, <span clas
 
 <span class="kw">public class</span> Program
 {
-    <span class="cmt">// Load from env/secret store in production</span>
-    <span class="kw">private const</span> <span class="kw">string</span> TOTP_SECRET = <span class="str">"MCAA7REYNQ4L6DYQEVTAXAK7RGANQHOY"</span>;
+    <span class="cmt">// Never hard-code the secret — load it from an env var / secrets manager</span>
+    <span class="kw">private static readonly</span> <span class="kw">string</span> TOTP_SECRET = Environment.GetEnvironmentVariable(<span class="str">"TOTP_SECRET"</span>);
 
     <span class="kw">public static</span> <span class="kw">string</span> <span class="fn">GetTotpCode</span>()
     {
