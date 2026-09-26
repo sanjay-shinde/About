@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complete MFA Challenges for Automation Users (TOTP) · Sanjay Shinde</title>
+  <meta name="description" content="How to complete Salesforce MFA challenges for automation users using time-based one-time passwords (TOTP) — with working Node.js, Java, and .NET code samples." />
+  <meta name="keywords" content="Salesforce MFA, automation users, TOTP, time-based one-time password, Salesforce automation login, MFA Node.js, MFA Java, MFA .NET, Sanjay Shinde" />
+  <meta name="author" content="Sanjay Shinde" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sanjay-shinde.github.io/blog/complete-mfa-challenges-for-automation-users.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Sanjay Shinde" />
+  <meta property="og:title" content="Complete MFA Challenges for Automation Users (TOTP)" />
+  <meta property="og:description" content="Generate Salesforce TOTP codes programmatically for automation users — Node.js, Java, and .NET samples." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://sanjay-shinde.github.io/blog/complete-mfa-challenges-for-automation-users.html" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Complete MFA Challenges for Automation Users (TOTP)" />
+  <meta name="twitter:description" content="Generate Salesforce TOTP codes programmatically for automation users — Node.js, Java, and .NET samples." />
+
+  <!-- Structured data: Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Complete MFA Challenges for Automation Users",
+    "description": "How to complete Salesforce MFA challenges for automation users using TOTP, with Node.js, Java, and .NET code samples.",
+    "author": { "@type": "Person", "name": "Sanjay Shinde", "url": "https://sanjay-shinde.github.io/" },
+    "publisher": { "@type": "Person", "name": "Sanjay Shinde" },
+    "datePublished": "2026-09-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://sanjay-shinde.github.io/blog/complete-mfa-challenges-for-automation-users.html" },
+    "keywords": "Salesforce MFA, automation users, TOTP, Node.js, Java, .NET",
+    "url": "https://sanjay-shinde.github.io/blog/complete-mfa-challenges-for-automation-users.html"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0b1020; --panel: rgba(255,255,255,0.04); --panel-border: rgba(255,255,255,0.09);
+      --text: #e8ecf8; --muted: #9aa6c7; --brand: #00a1e0; --brand-2: #7c4dff; --accent: #ff6f61;
+      --ring: rgba(0,161,224,0.35); --radius: 18px; --maxw: 800px;
+      --code-bg: #0e1428;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Sora', sans-serif; letter-spacing: -0.02em; line-height: 1.2; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .aurora { position: fixed; inset: 0; z-index: -2;
+      background:
+        radial-gradient(60% 60% at 15% 10%, rgba(0,161,224,0.22), transparent 60%),
+        radial-gradient(50% 50% at 85% 5%, rgba(124,77,255,0.20), transparent 60%),
+        var(--bg); }
+
+    nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+      background: rgba(11,16,32,0.6); border-bottom: 1px solid var(--panel-border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px; max-width: 1080px; margin: 0 auto; }
+    .logo { font-family: 'Sora'; font-weight: 800; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; color: var(--text); }
+    .logo .dot { width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 0 16px var(--ring); }
+    .back { color: var(--muted); font-size: 0.9rem; }
+    .back:hover { color: var(--text); text-decoration: none; }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    article { padding: 64px 0 40px; }
+    .kicker { color: var(--brand); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    article h1 { font-size: clamp(1.9rem, 5vw, 2.9rem); font-weight: 800; margin: 14px 0 18px;
+      background: linear-gradient(120deg, var(--text), #c9d4f5); -webkit-background-clip: text; background-clip: text; }
+    .meta { color: var(--muted); font-size: 0.92rem; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center;
+      padding-bottom: 26px; border-bottom: 1px solid var(--panel-border); margin-bottom: 34px; }
+    .meta .pill { padding: 4px 12px; border-radius: 999px; background: rgba(0,161,224,0.10); border: 1px solid rgba(0,161,224,0.25); color: #bfe6f7; font-size: 0.78rem; }
+
+    .lead { font-size: 1.15rem; color: var(--text); margin-bottom: 28px; }
+    article p { color: #cfd6ee; margin-bottom: 20px; }
+    article h2 { font-size: 1.5rem; margin: 44px 0 12px; }
+    article h3 { font-size: 1.15rem; margin: 28px 0 8px; color: var(--text); }
+    article ul, article ol { color: #cfd6ee; margin: 0 0 20px; padding-left: 22px; }
+    article li { margin-bottom: 10px; }
+    code:not(pre code) { font-family: 'JetBrains Mono', monospace; font-size: 0.86em;
+      background: rgba(124,77,255,0.14); border: 1px solid rgba(124,77,255,0.25); color: #d8ccff; padding: 2px 7px; border-radius: 6px; }
+
+    .callout { display: flex; gap: 14px; background: var(--panel); border: 1px solid var(--panel-border);
+      border-left: 3px solid var(--brand-2); border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 26px 0; }
+    .callout .ico { font-size: 1.2rem; }
+    .callout p { margin: 0; color: #cfd6ee; font-size: 0.96rem; }
+    .callout.warn { border-left-color: var(--accent); }
+    .callout.tip  { border-left-color: #38e08a; }
+
+    /* Steps */
+    .steps { counter-reset: step; margin: 20px 0 10px; padding: 0; list-style: none; }
+    .steps li { position: relative; padding: 4px 0 18px 44px; }
+    .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0;
+      width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-family: 'Sora'; font-weight: 800;
+      font-size: 0.9rem; color: #fff; background: linear-gradient(135deg, var(--brand), var(--brand-2)); }
+
+    /* Code block with tabs */
+    .code-tabs { margin: 22px 0; border: 1px solid var(--panel-border); border-radius: 14px; overflow: hidden; background: var(--code-bg); }
+    .tabs-bar { display: flex; align-items: center; gap: 4px; padding: 8px 8px 0; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--panel-border); flex-wrap: wrap; }
+    .tab-btn { font-family: 'Inter'; font-size: 0.85rem; font-weight: 600; color: var(--muted); background: none; border: none;
+      padding: 9px 16px; border-radius: 8px 8px 0 0; cursor: pointer; transition: color .15s, background .15s; }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--text); background: var(--code-bg); box-shadow: inset 0 -2px 0 var(--brand); }
+    .copy-btn { margin-left: auto; font-size: 0.78rem; color: var(--muted); background: rgba(255,255,255,0.05);
+      border: 1px solid var(--panel-border); border-radius: 7px; padding: 6px 12px; cursor: pointer; margin-bottom: 6px; transition: color .15s, border-color .15s; }
+    .copy-btn:hover { color: var(--text); border-color: var(--brand); }
+    pre { margin: 0; padding: 20px; overflow-x: auto; }
+    pre code { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; line-height: 1.65; color: #d6e2ff; white-space: pre; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .cmt { color: #6b7aa3; }
+    .kw  { color: #ff9d76; }
+    .str { color: #9ae6b4; }
+    .fn  { color: #7cc7ff; }
+
+    blockquote { margin: 28px 0; padding: 16px 22px; border-left: 3px solid var(--brand);
+      background: var(--panel); border-radius: 0 12px 12px 0; color: var(--muted); font-style: italic; }
+
+    .cta { text-align: center; padding: 30px 0 10px; }
+    .btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 24px; border-radius: 999px;
+      font-weight: 600; font-size: 0.95rem; background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: white; box-shadow: 0 10px 30px -8px var(--ring); transition: transform .15s ease; }
+    .btn:hover { transform: translateY(-3px); text-decoration: none; }
+
+    .note { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--panel-border);
+      margin-top: 44px; padding-top: 20px; }
+
+    footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 30px 0 60px; }
+    footer .heart { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="aurora"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="../index.html"><span class="dot"></span> Sanjay Shinde</a>
+      <a class="back" href="../index.html#blog">← Back to blog</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <article>
+      <div class="kicker">Salesforce · Security · Automation</div>
+      <h1>Complete MFA Challenges for Automation Users</h1>
+      <div class="meta">
+        <span>By Sanjay Shinde</span>
+        <span>·</span>
+        <span>Sep 2026</span>
+        <span>·</span>
+        <span>7 min read</span>
+        <span class="pill">MFA</span>
+        <span class="pill">TOTP</span>
+        <span class="pill">Automation</span>
+      </div>
+
+      <p class="lead">
+        Multi-factor authentication (MFA) is mandatory for Salesforce logins — which is great for
+        security, but it can break automated processes that log in through the UI: test automation,
+        RPA bots, screen-scraping jobs, and monitoring scripts. The clean way to solve this is to give
+        the automation user a <strong>time-based one-time password (TOTP)</strong> authenticator and
+        generate the verification code programmatically. Here's how.
+      </p>
+
+      <div class="callout tip">
+        <span class="ico">💡</span>
+        <p><strong>Prefer API auth when you can.</strong> If your integration can use the Salesforce APIs directly, use an OAuth flow — the JWT Bearer or Client Credentials flow — which is not subject to interactive MFA. Use the TOTP approach below only for automation that genuinely has to complete the <em>UI login</em> challenge.</p>
+      </div>
+
+      <h2>Why automation users hit MFA</h2>
+      <p>
+        MFA challenges the <em>interactive</em> login. A human normally reads a 6-digit code from an
+        authenticator app (Salesforce Authenticator, Google Authenticator, etc.) and types it in. An
+        automated process has no human to do that — so it stalls at the verification screen. The fix is
+        to register an authenticator for the automation user, capture the underlying
+        <strong>shared secret</strong>, and have your automation compute the same 6-digit code the app
+        would have shown.
+      </p>
+
+      <h2>How TOTP works (in one paragraph)</h2>
+      <p>
+        TOTP (RFC 6238) derives a short code from two inputs: a <strong>shared secret</strong> (a Base32
+        string you get once, at setup) and the <strong>current time</strong>. The current Unix time is
+        divided into 30-second windows; that window number is HMAC-SHA1–hashed with the secret, then
+        truncated to a 6-digit number. Because both Salesforce and your code use the same secret and the
+        same clock, they compute the same code — no network round-trip needed. Salesforce's defaults are
+        <code>30s</code> period, <code>6</code> digits, <code>SHA1</code>.
+      </p>
+
+      <h2>Step 1 — Register an authenticator &amp; capture the secret</h2>
+      <ol class="steps">
+        <li>Log in as the automation user and open <strong>Settings → Personal → Advanced User Details</strong> (or your org's app-registration path for the <em>One-Time Password Generator</em>).</li>
+        <li>Choose to <strong>connect / register an authenticator app</strong>. Salesforce shows a QR code and a text <strong>shared key</strong>.</li>
+        <li>Instead of scanning the QR, copy the <strong>Base32 shared key</strong> — this is what your code needs. (It looks like <code>MCAA7REYNQ4L6DYQEVTAXAK7RGANQHOY</code>.)</li>
+        <li>Finish registration by entering one valid code (you can generate it with the snippets below) so Salesforce binds the authenticator to the user.</li>
+      </ol>
+
+      <div class="callout warn">
+        <span class="ico">🔐</span>
+        <p><strong>Treat the shared secret like a password.</strong> Anyone with it can generate valid codes. Store it in a secrets manager / environment variable — never hard-code it in source or commit it to Git. The hard-coded values below are for illustration only.</p>
+      </div>
+
+      <h2>Step 2 — Generate the TOTP code in your automation</h2>
+      <p>
+        Pick your stack. Each snippet takes the Base32 secret and returns the current 6-digit code, which
+        your automation then submits at the Salesforce verification prompt.
+      </p>
+
+      <div class="code-tabs">
+        <div class="tabs-bar">
+          <button class="tab-btn active" data-tab="node">Node.js</button>
+          <button class="tab-btn" data-tab="java">Java</button>
+          <button class="tab-btn" data-tab="dotnet">.NET (C#)</button>
+          <button class="copy-btn" onclick="copyActive(this)">Copy</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="node">
+<pre><code><span class="cmt">// npm install otplib</span>
+<span class="kw">const</span> { authenticator } = <span class="fn">require</span>(<span class="str">'otplib'</span>);
+
+<span class="cmt">// Base32 shared secret from Salesforce — load from env, never hard-code</span>
+<span class="kw">const</span> TOTP_SECRET = process.env.<span class="fn">TOTP_SECRET</span>;
+
+<span class="kw">function</span> <span class="fn">getTotpCode</span>() {
+  <span class="kw">if</span> (!TOTP_SECRET) {
+    <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">'Missing TOTP_SECRET'</span>);
+  }
+  <span class="cmt">// 30s period / 6 digits / SHA1 are the defaults — matches Salesforce</span>
+  <span class="kw">return</span> authenticator.<span class="fn">generate</span>(TOTP_SECRET);
+}
+
+console.<span class="fn">log</span>(<span class="str">'code:'</span>, <span class="fn">getTotpCode</span>());</code></pre>
+        </div>
+
+        <div class="tab-panel" data-panel="java">
+<pre><code><span class="kw">import</span> javax.crypto.Mac;
+<span class="kw">import</span> javax.crypto.spec.SecretKeySpec;
+<span class="kw">import</span> java.nio.ByteBuffer;
+<span class="kw">import</span> java.security.GeneralSecurityException;
+<span class="kw">import</span> java.time.Instant;
+
+<span class="kw">public class</span> Totp {
+
+    <span class="cmt">// Load from env/secret store in production</span>
+    <span class="kw">private static final</span> String TOTP_SECRET = <span class="str">"MCAA7REYNQ4L6DYQEVTAXAK7RGANQHOY"</span>;
+
+    <span class="kw">public static</span> String <span class="fn">getTotpCode</span>() <span class="kw">throws</span> GeneralSecurityException {
+        <span class="kw">if</span> (TOTP_SECRET == <span class="kw">null</span> || TOTP_SECRET.isEmpty()) {
+            <span class="kw">throw new</span> IllegalArgumentException(<span class="str">"Missing TOTP_SECRET"</span>);
+        }
+        <span class="kw">byte</span>[] keyBytes = <span class="fn">decodeBase32</span>(TOTP_SECRET);
+        <span class="kw">long</span> timeInterval = Instant.now().getEpochSecond() / <span class="str">30</span>; <span class="cmt">// 30s step</span>
+        <span class="kw">return</span> <span class="fn">generateTOTP</span>(keyBytes, timeInterval, <span class="str">6</span>);
+    }
+
+    <span class="kw">private static</span> String <span class="fn">generateTOTP</span>(<span class="kw">byte</span>[] key, <span class="kw">long</span> time, <span class="kw">int</span> digits)
+            <span class="kw">throws</span> GeneralSecurityException {
+        <span class="kw">byte</span>[] data = ByteBuffer.allocate(<span class="str">8</span>).putLong(time).array();
+        Mac mac = Mac.getInstance(<span class="str">"HmacSHA1"</span>);
+        mac.init(<span class="kw">new</span> SecretKeySpec(key, <span class="str">"RAW"</span>));
+        <span class="kw">byte</span>[] hash = mac.doFinal(data);
+
+        <span class="kw">int</span> offset = hash[hash.length - <span class="str">1</span>] & <span class="str">0xF</span>;
+        <span class="kw">int</span> binary = ((hash[offset] & <span class="str">0x7F</span>) &lt;&lt; <span class="str">24</span>)
+                   | ((hash[offset + <span class="str">1</span>] & <span class="str">0xFF</span>) &lt;&lt; <span class="str">16</span>)
+                   | ((hash[offset + <span class="str">2</span>] & <span class="str">0xFF</span>) &lt;&lt; <span class="str">8</span>)
+                   |  (hash[offset + <span class="str">3</span>] & <span class="str">0xFF</span>);
+        <span class="kw">int</span> otp = binary % (<span class="kw">int</span>) Math.pow(<span class="str">10</span>, digits);
+        <span class="kw">return</span> String.format(<span class="str">"%0"</span> + digits + <span class="str">"d"</span>, otp);
+    }
+
+    <span class="cmt">// RFC 4648 Base32 alphabet</span>
+    <span class="kw">private static</span> <span class="kw">byte</span>[] <span class="fn">decodeBase32</span>(String base32) {
+        String ALPHABET = <span class="str">"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"</span>;
+        String s = base32.trim().toUpperCase().replaceAll(<span class="str">"="</span>, <span class="str">""</span>);
+        <span class="kw">byte</span>[] bytes = <span class="kw">new</span> <span class="kw">byte</span>[s.length() * <span class="str">5</span> / <span class="str">8</span>];
+        <span class="kw">int</span> buffer = <span class="str">0</span>, bitsLeft = <span class="str">0</span>, index = <span class="str">0</span>;
+        <span class="kw">for</span> (<span class="kw">char</span> c : s.toCharArray()) {
+            <span class="kw">int</span> val = ALPHABET.indexOf(c);
+            <span class="kw">if</span> (val == -<span class="str">1</span>) <span class="kw">throw new</span> IllegalArgumentException(<span class="str">"Invalid Base32 char: "</span> + c);
+            buffer = (buffer &lt;&lt; <span class="str">5</span>) | val;
+            bitsLeft += <span class="str">5</span>;
+            <span class="kw">if</span> (bitsLeft &gt;= <span class="str">8</span>) {
+                bytes[index++] = (<span class="kw">byte</span>) (buffer &gt;&gt; (bitsLeft - <span class="str">8</span>));
+                bitsLeft -= <span class="str">8</span>;
+            }
+        }
+        <span class="kw">return</span> bytes;
+    }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) <span class="kw">throws</span> Exception {
+        System.out.println(<span class="str">"code: "</span> + <span class="fn">getTotpCode</span>());
+    }
+}</code></pre>
+        </div>
+
+        <div class="tab-panel" data-panel="dotnet">
+<pre><code><span class="kw">using</span> System;
+<span class="kw">using</span> System.Security.Cryptography;
+
+<span class="kw">public class</span> Program
+{
+    <span class="cmt">// Load from env/secret store in production</span>
+    <span class="kw">private const</span> <span class="kw">string</span> TOTP_SECRET = <span class="str">"MCAA7REYNQ4L6DYQEVTAXAK7RGANQHOY"</span>;
+
+    <span class="kw">public static</span> <span class="kw">string</span> <span class="fn">GetTotpCode</span>()
+    {
+        <span class="kw">if</span> (<span class="kw">string</span>.IsNullOrEmpty(TOTP_SECRET))
+            <span class="kw">throw new</span> ArgumentException(<span class="str">"Missing TOTP_SECRET"</span>);
+
+        <span class="kw">byte</span>[] key = <span class="fn">DecodeBase32</span>(TOTP_SECRET);
+
+        <span class="cmt">// 30-second step as an 8-byte big-endian value</span>
+        <span class="kw">long</span> timeStep = DateTimeOffset.UtcNow.ToUnixTimeSeconds() / <span class="str">30</span>;
+        <span class="kw">byte</span>[] timeBytes = BitConverter.GetBytes(timeStep);
+        <span class="kw">if</span> (BitConverter.IsLittleEndian) Array.Reverse(timeBytes);
+
+        <span class="kw">using var</span> hmac = <span class="kw">new</span> HMACSHA1(key);
+        <span class="kw">byte</span>[] hash = hmac.ComputeHash(timeBytes);
+
+        <span class="kw">int</span> offset = hash[^<span class="str">1</span>] & <span class="str">0x0F</span>;
+        <span class="kw">int</span> binary = ((hash[offset] & <span class="str">0x7F</span>) &lt;&lt; <span class="str">24</span>) |
+                     ((hash[offset + <span class="str">1</span>] & <span class="str">0xFF</span>) &lt;&lt; <span class="str">16</span>) |
+                     ((hash[offset + <span class="str">2</span>] & <span class="str">0xFF</span>) &lt;&lt; <span class="str">8</span>) |
+                      (hash[offset + <span class="str">3</span>] & <span class="str">0xFF</span>);
+
+        <span class="kw">return</span> (binary % <span class="str">1000000</span>).ToString(<span class="str">"D6"</span>);
+    }
+
+    <span class="cmt">// RFC 4648 Base32 alphabet</span>
+    <span class="kw">private static</span> <span class="kw">byte</span>[] <span class="fn">DecodeBase32</span>(<span class="kw">string</span> input)
+    {
+        <span class="kw">const</span> <span class="kw">string</span> alphabet = <span class="str">"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"</span>;
+        <span class="kw">string</span> clean = input.TrimEnd(<span class="str">'='</span>).ToUpperInvariant();
+        <span class="kw">byte</span>[] output = <span class="kw">new</span> <span class="kw">byte</span>[clean.Length * <span class="str">5</span> / <span class="str">8</span>];
+
+        <span class="kw">int</span> buffer = <span class="str">0</span>, bitsLeft = <span class="str">0</span>, index = <span class="str">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> clean)
+        {
+            <span class="kw">int</span> val = alphabet.IndexOf(c);
+            <span class="kw">if</span> (val == -<span class="str">1</span>) <span class="kw">throw new</span> ArgumentException($<span class="str">"Invalid Base32 char: {c}"</span>);
+            buffer = (buffer &lt;&lt; <span class="str">5</span>) | val;
+            bitsLeft += <span class="str">5</span>;
+            <span class="kw">if</span> (bitsLeft &gt;= <span class="str">8</span>)
+            {
+                output[index++] = (<span class="kw">byte</span>)(buffer &gt;&gt; (bitsLeft - <span class="str">8</span>));
+                bitsLeft -= <span class="str">8</span>;
+            }
+        }
+        <span class="kw">return</span> output;
+    }
+
+    <span class="kw">public static void</span> <span class="fn">Main</span>() =&gt; Console.WriteLine($<span class="str">"code: {GetTotpCode()}"</span>);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="ico">🛠️</span>
+        <p><strong>What I fixed vs. common copy-paste versions:</strong> the Base32 decoder must use the RFC 4648 alphabet <code>ABCDEFGHIJKLMNOPQRSTUVWXYZ234567</code> — not a placeholder string — or decoding silently produces wrong codes. The Node.js sample uses otplib's <code>authenticator.generate()</code>, whose defaults (30s / 6 digits / SHA1) already match Salesforce.</p>
+      </div>
+
+      <h2>Step 3 — Feed the code into your login flow</h2>
+      <p>
+        Wherever your automation drives the browser (Selenium, Playwright, Puppeteer) or replays the
+        login, call the function above at the moment the verification prompt appears and type the
+        returned code. Because codes rotate every 30 seconds, generate it <em>immediately before</em>
+        submitting — don't cache it.
+      </p>
+
+      <h2>Gotchas &amp; best practices</h2>
+      <ul>
+        <li><strong>Clock sync matters.</strong> TOTP depends on time. Keep your automation host's clock synced via NTP, or codes will be rejected.</li>
+        <li><strong>Handle the boundary.</strong> If you generate a code in the last second of a window, it may expire before submission. Regenerate right before use, and be ready to retry once.</li>
+        <li><strong>Secure the secret.</strong> Environment variable or secrets manager — never in source control.</li>
+        <li><strong>Least privilege.</strong> Scope the automation user's permissions tightly and monitor its logins.</li>
+        <li><strong>Reconsider the approach.</strong> If this is an API integration, switch to OAuth (JWT Bearer / Client Credentials) and skip interactive MFA entirely.</li>
+      </ul>
+
+      <blockquote>
+        The goal isn't to weaken MFA — it's to let a trusted, tightly-scoped automation identity satisfy
+        the same challenge a human would, in a way you fully control.
+      </blockquote>
+
+      <div class="cta">
+        <a class="btn" href="mailto:sanjayshinde@salesforce.com">✉️ Questions? Let's talk</a>
+      </div>
+
+      <p class="note">
+        Based on Salesforce's guidance for completing MFA challenges for automation users with TOTP.
+        Setup menu paths and requirements change over time — always confirm the current steps in the
+        official Salesforce Help article before implementing. Code samples are illustrative; test in a
+        sandbox first.
+      </p>
+    </article>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Sanjay Shinde · Built with <span class="heart">♥</span>
+    <div style="margin-top:12px;">
+      <img src="https://hits.sh/sanjay-shinde.github.io/blog/complete-mfa-challenges-for-automation-users.svg?style=flat-square&label=post%20views&color=00a1e0&labelColor=111832"
+           alt="Post views" style="opacity:.85;" loading="lazy" />
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.tab-panel').forEach(p =>
+          p.classList.toggle('active', p.dataset.panel === tab));
+      });
+    });
+
+    // Copy the active code panel
+    function copyActive(el) {
+      const panel = document.querySelector('.tab-panel.active code');
+      if (!panel) return;
+      navigator.clipboard.writeText(panel.innerText).then(() => {
+        const old = el.textContent; el.textContent = 'Copied!';
+        setTimeout(() => el.textContent = old, 1500);
+      });
+    }
+    window.copyActive = copyActive;
+  </script>
+</body>
+</html>
